@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 namespace SurfaceDetection
 {
@@ -34,6 +35,13 @@ std::istream &operator>>(std::istream &in, Point_t &arg)
     return in >> arg.x >> arg.y >> arg.z;
 }
 
+struct Data
+{
+    float epsilon;
+    unsigned long count_points;
+    std::vector<Point_t> points_vector;
+};
+
 template <typename T>
 class DataProvider
 {
@@ -43,6 +51,24 @@ public:
         static DataProvider<T> instance{in};
         return instance;
     }
+
+    static Data get_data()
+    {
+        Data data;
+        input >> data.epsilon;
+        input >> data.count_points;
+        data.points_vector.reserve(data.count_points);
+        float x{0f};
+        float y{0f};
+        float z{0f};
+        for (unsigned long i{0ul}; i < data.count_points; ++i)
+        {
+            input >> x >> y >> z;
+            data.points_vector.emplace_back(x, y, z);
+        }
+        return data;
+    }
+
 private:
     T &input;
 
