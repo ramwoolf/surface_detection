@@ -52,15 +52,15 @@ public:
         return instance;
     }
 
-    static Data get_data()
+    Data get_data()
     {
         Data data;
         input >> data.epsilon;
         input >> data.count_points;
         data.points_vector.reserve(data.count_points);
-        float x{0f};
-        float y{0f};
-        float z{0f};
+        float x{0.0f};
+        float y{0.0f};
+        float z{0.0f};
         for (unsigned long i{0ul}; i < data.count_points; ++i)
         {
             input >> x >> y >> z;
@@ -85,7 +85,7 @@ int main(int argc, char const *argv[])
     using namespace SurfaceDetection;
     std::fstream fs{"test_file.txt", std::ios::in};
     DataProvider<std::fstream> &file_input_data_provider = DataProvider<std::fstream>::get_instance(fs);
-    DataProvider<std::istream> &std_input_data_provider = DataProvider<std::istream>::get_instance(std::cin);
+    // DataProvider<std::istream> &std_input_data_provider = DataProvider<std::istream>::get_instance(std::cin);
 
     return 0;
 }
