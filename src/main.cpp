@@ -8,6 +8,7 @@
 
 
 #include <iostream>
+#include <fstream>
 
 namespace SurfaceDetection
 {
@@ -33,12 +34,32 @@ std::istream &operator>>(std::istream &in, Point_t &arg)
     return in >> arg.x >> arg.y >> arg.z;
 }
 
+template <typename T>
+class DataProvider
+{
+public:
+    static DataProvider<T> &get_instance(T &in)
+    {
+        static DataProvider<T> instance{in};
+        return instance;
+    }
+private:
+    T &input;
+
+    DataProvider(T &in) : input(in) {}
+    DataProvider(DataProvider<T> const &arg);
+    DataProvider<T> &operator=(DataProvider<T> const &arg);
+
 };
+
+}
 
 int main(int argc, char const *argv[])
 {
     using namespace SurfaceDetection;
-
+    std::fstream fs{"test_file.txt", std::ios::in};
+    DataProvider<std::fstream> &file_input_data_provider = DataProvider<std::fstream>::get_instance(fs);
+    DataProvider<std::istream> &std_input_data_provider = DataProvider<std::istream>::get_instance(std::cin);
 
     return 0;
 }
